@@ -1,75 +1,57 @@
-
-import { Button } from "@/Components/ui/button"
-import { LucideProps, Moon, Sun } from 'lucide-react'
-import { useEffect, useState } from "react"
-
+import { Button } from "@/Components/ui/button";
+import { LucideProps, Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from "react";
 
 interface Props {
-  iconSize?: LucideProps["size"],
-  className?: string
+  iconSize?: LucideProps["size"];
+  className?: string;
 }
 
 const ThemeHandler = (props: Props) => {
-
-  //check if the theme is in the local storage, if so then set it if not then set it to light
-  //this is so that the theme is saved between refreshes
-  //then if button is clicked toggle between light and dark
-  //to set the theme u can use document.documentElement.classList.add('dark') or remove
-
-  const [theme, setTheme] = useState<string>("light")
+  // State for the theme
+  const [theme, setTheme] = useState<string>(() => {
+    // Check if theme is stored in local storage
+    const storedTheme = localStorage.getItem("theme");
+    return storedTheme || "light"; // Use stored theme if available, otherwise use "light"
+  });
 
   useEffect(() => {
-    const theme = localStorage.getItem("theme")
-    if (theme) {
-      setTheme(theme)
+    // Update the classList of document.documentElement based on the theme
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      setTheme("light")
+      document.documentElement.classList.remove("dark");
     }
-  }, [])
+    // Store the theme in local storage
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
-  const changeTheme = () => {
-    if (theme === "light") {
-      setTheme("dark")
-      localStorage.setItem("theme", "dark")
-      document.documentElement.classList.add('dark')
-    } else {
-      setTheme("light")
-      localStorage.setItem("theme", "light")
-      document.documentElement.classList.remove('dark')
-    }
-  }
+  // Toggle the theme
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
 
-
-
-
-
+  // Set the icon based on the theme
   const SetIconToTheme = () => {
     if (theme === "light") {
-      return <Moon size={props.iconSize} />
+      return <Moon size={props.iconSize} />;
     } else {
-      return <Sun size={props.iconSize} />
+      return <Sun size={props.iconSize} />;
     }
-  }
-
-
+  };
 
   return (
     <div className={props.className}>
-      <Button variant="outline" size="icon" className="bg-transparent" onClick={changeTheme}>{SetIconToTheme()}</Button>
+      <Button
+        variant="outline"
+        size="icon"
+        className="bg-transparent"
+        onClick={toggleTheme}
+      >
+        {SetIconToTheme()}
+      </Button>
     </div>
+  );
+};
 
-  )
-
-
-}
-
-export default ThemeHandler
-
-
-
-
-
-
-
-
-
+export default ThemeHandler;
