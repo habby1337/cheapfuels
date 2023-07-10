@@ -1,10 +1,17 @@
 import Select from 'react-select';
 import { Button } from '@/Components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const From = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   const classNamesStyles = {
     control: () =>
@@ -23,7 +30,7 @@ const From = () => {
         </>
       );
     } else {
-      return 'Submit';
+      return <>Submit</>;
     }
   };
 
