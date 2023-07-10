@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 const From = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); //state
 
   const classNamesStyles = {
     control: () =>
