@@ -30,7 +30,16 @@ export interface SearchByBrandCriteria extends SearchBaseCriteria {
 
 // Form interfaces
 export interface FormInputs {
-  vehicleId: string;
-  distance: string;
-  priceOrder: 'asc' | 'desc';
+  vehicleId: string | null;
+  distance: string | null;
+  priceOrder: { label: string; value: string } | null;
+}
+
+export interface VehicleData {
+  fuelType: { label: string; value: string } | null; // Assuming FuelType is an enum type
+  desiredPrice: number;
+  carName: string;
+  carBrand: string;
+  carModel: string;
+  carYear: number;
 }
