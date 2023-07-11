@@ -57,7 +57,7 @@ const MyCars = () => {
           </div>
         </div>
 
-        <div className='flex-grow w-100'>
+        <div className='flex-grow mt-5 lg:mt-0 w-100'>
           <div className='block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='mb-4'>
