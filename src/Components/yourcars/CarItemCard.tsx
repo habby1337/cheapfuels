@@ -1,6 +1,4 @@
-import { MouseEventHandler } from 'react';
-
-const CarItemCard = (props: any) => {
+const CarItemCard = () => {
   const handleItemCarClick = () => {
     console.log('clicked');
   };
