@@ -4,7 +4,11 @@ import Home from './Components/routes/Home';
 import MyCars from './Components/routes/MyCars';
 import ErrorPage from './Components/ErrorPage/ErrorPage';
 
+import useSetupIndexedDB from './Components/hooks/useSetupIndexedDB';
+
 const App = () => {
+  useSetupIndexedDB();
+
   return (
     <BrowserRouter>
       <NavBar />
@@ -16,6 +20,11 @@ const App = () => {
         />
         <Route
           path='/mycars'
+          element={<MyCars />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path='/mycars/:id'
           element={<MyCars />}
           errorElement={<ErrorPage />}
         />
