@@ -38,7 +38,7 @@ const MyCars = () => {
     <div className='container px-0'>
       <div className='flex-row gap-x-2 lg:flex'>
         <div className='w-full lg:w-1/3'>
-          <div className='block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+          <div className='block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 '>
             <div className='flex items-center justify-center'>
               <span className='text-xl font-bold text-gray-600 text-md dark:text-gray-400'>
                 Your Cars
