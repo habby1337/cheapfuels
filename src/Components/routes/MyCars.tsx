@@ -39,7 +39,7 @@ const MyCars = () => {
           success: 'Car data loaded',
           error: 'Error loading car data',
         },
-        { toastId: 'carData' }
+        { toastId: 'carData', autoClose: 2000 }
       )
       .then((data) => {
         setCarData(data);
