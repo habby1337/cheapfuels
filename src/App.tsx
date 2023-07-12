@@ -24,6 +24,11 @@ const App = () => {
           errorElement={<ErrorPage />}
         />
         <Route
+          path='/mycars/:id'
+          element={<MyCars />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
           path='*'
           element={<ErrorPage />}
         />
