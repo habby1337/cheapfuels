@@ -6,6 +6,10 @@ import ErrorPage from './Components/ErrorPage/ErrorPage';
 
 import useSetupIndexedDB from './Components/hooks/useSetupIndexedDB';
 
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
   useSetupIndexedDB();
 
@@ -33,6 +37,19 @@ const App = () => {
           element={<ErrorPage />}
         />
       </Routes>
+      <ToastContainer
+        position='bottom-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        // theme='dark'
+        toastClassName='dark:bg-slate-700 dark:text-white'
+      />
     </BrowserRouter>
   );
 };
