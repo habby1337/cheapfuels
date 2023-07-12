@@ -13,7 +13,6 @@ const CarViewCard = ({ carData, isNewCarAdded }: Props) => {
 
   useEffect(() => {
     if (isNewCarAdded) console.log('new car added');
-    console.log('car view card triggered with new car added');
   }, [isNewCarAdded]);
 
   return (

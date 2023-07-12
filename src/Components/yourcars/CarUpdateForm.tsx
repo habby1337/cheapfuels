@@ -7,6 +7,7 @@ import { VehicleDataWithId } from '@/Shared/Interfaces/interfaces';
 import { useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface Props {
   onNewCarAdded: () => void;
@@ -24,10 +25,19 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
 
   const populateFormWithSelectedCar = (): void => {
     if (!id) return console.log('no id');
-    getByID(parseInt(id))
+    toast
+      .promise(
+        getByID(parseInt(id)),
+        {
+          pending: 'Loading...',
+          success: 'Car data loaded',
+          error: 'Error loading car data',
+        },
+        { toastId: 'carData' }
+      )
       .then((data) => {
         //TODO ADD TOAST
-        if (!data) return console.log('no data');
+        if (!data) return toast.error('No data found');
         //set the form with the data
         setValue('fuelType', data.fuelType);
         setValue('desiredPrice', data.desiredPrice);
@@ -38,7 +48,7 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
       })
       .finally(() => onNewCarAdded())
       .catch((error) => {
-        console.log(error);
+        toast.error(`Error loading car data ${error as string}`);
       });
   };
 
@@ -55,24 +65,40 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
   } = useForm<VehicleDataWithId>();
 
   const onSubmit: SubmitHandler<VehicleDataWithId> = (data) => {
-    console.log('update car data', data);
     data.id = parseInt(id as string);
 
-    update(data)
-      .then((d) => console.log(d))
-      .finally(() => populateFormWithSelectedCar())
-      .catch((error) => console.log(error));
+    toast
+      .promise(
+        update(data),
+        {
+          pending: 'Updating...',
+          success: 'Car updated',
+          error: 'Error updating car',
+        },
+        { toastId: 'updateCar' }
+      )
+      .then((d) => toast.success(`Car updated with id ${d}`))
+      .catch((error) => toast.error(`Error updating car ${error as string}`))
+      .finally(() => populateFormWithSelectedCar());
   };
 
   const deleteCar = () => {
-    console.log('delete car');
-    deleteByID(parseInt(id as string))
-      .then((d) => console.log(d))
+    toast
+      .promise(
+        deleteByID(parseInt(id as string)),
+        {
+          pending: 'Deleting...',
+          success: 'Car deleted',
+          error: 'Error deleting car',
+        },
+        { toastId: 'deleteCar' }
+      )
+      .then((d) => toast.success(`Car deleted with id ${d}`))
       .finally(() => {
         populateFormWithSelectedCar();
         navigate('/myCars');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error(`Error deleting car ${error as string}`));
   };
 
   const options = Object.keys(FuelType).map((key) => ({
