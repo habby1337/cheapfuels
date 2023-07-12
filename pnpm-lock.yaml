@@ -41,6 +41,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.6
     version: 1.0.6(tailwindcss@3.3.2)
+  use-indexeddb:
+    specifier: ^2.0.2
+    version: 2.0.2(react@18.2.0)
   zustand:
     specifier: ^4.3.9
     version: 4.3.9(react@18.2.0)
@@ -2316,6 +2319,15 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+
+  /use-indexeddb@2.0.2(react@18.2.0):
+    resolution: {integrity: sha512-pF1Gnrdg7wYvSKAXQvITP0KDVFnecjfckxLAtne6WYDJfbGaeOG7038sZjpR9SrcS9xrjKLJSjeakkYzHyhhEw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=17'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /use-isomorphic-layout-effect@1.1.2(@types/react@18.2.14)(react@18.2.0):
     resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
