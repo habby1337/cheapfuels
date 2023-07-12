@@ -36,10 +36,14 @@ export interface FormInputs {
 }
 
 export interface VehicleData {
-  fuelType: { label: string; value: string } | null; // Assuming FuelType is an enum type
-  desiredPrice: number;
+  fuelType?: { label: string; value: string } | null; // Assuming FuelType is an enum type
+  desiredPrice?: number;
   carName: string;
   carBrand: string;
   carModel: string;
   carYear: number;
+}
+
+export interface VehicleDataWithId extends VehicleData {
+  id: number;
 }

@@ -1,10 +1,24 @@
-const CarItemCard = () => {
-  const handleItemCarClick = () => {
-    console.log('clicked');
+import { VehicleDataWithId } from '@/Shared/Interfaces/interfaces';
+
+import { useNavigate } from 'react-router-dom';
+
+const CarItemCard = ({
+  id,
+  carName,
+  carBrand,
+  carModel,
+  carYear,
+  fuelType,
+}: VehicleDataWithId) => {
+  const navigate = useNavigate();
+
+  const modifySelectedVehicleId = () => {
+    navigate(`/myCars/${id}`);
   };
+
   return (
     <div
-      onClick={handleItemCarClick}
+      onClick={modifySelectedVehicleId}
       className='block mt-1 bg-white border border-gray-300 rounded-lg shadow hover:bg-slate-100 dark:bg-gray-900 dark:border-gray-800 dark:hover:bg-slate-700 hover:cursor-pointer'>
       <div className='flex items-center justify-between p-4 border-b border-gray-300 dark:border-gray-800'>
         <div className='flex items-center flex-1'>
@@ -21,10 +35,10 @@ const CarItemCard = () => {
           </div>
           <div>
             <p className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-              Chicco machine
+              {carName}
             </p>
-            <p className='text-xs text-gray-600 dark:text-gray-400'>
-              2019 Ford Mustang
+            <p className='text-xs text-gray-600 capitalize dark:text-gray-400'>
+              {carBrand} {carModel} {carYear}
             </p>
           </div>
         </div>
@@ -34,7 +48,7 @@ const CarItemCard = () => {
             Alim.
           </span>
           <span className='text-xs font-semibold text-gray-900 dark:text-gray-200'>
-            Benzina
+            {fuelType?.label}
           </span>
         </div>
       </div>

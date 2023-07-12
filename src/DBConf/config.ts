@@ -3,7 +3,7 @@ const idbConfig = {
   version: 1,
   stores: [
     {
-      name: 'cars',
+      name: 'vehicles',
       id: { keyPath: 'id', autoIncrement: true },
       indices: [
         { name: 'carName', keyPath: 'carName', options: { unique: true } },
