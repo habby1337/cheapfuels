@@ -11,12 +11,9 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const MyCars = () => {
-  const {
-    control,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<VehicleData & FuelType>();
+  const { id } = useParams<{ id: string }>();
+  const [carData, setCarData] = useState<VehicleDataWithId[] | null>(null);
+  const [isNewCar, setIsNewCar] = useState<boolean>(false);
 
   const options = Object.keys(FuelType).map((key) => ({
     value: FuelType[key as keyof typeof FuelType],
