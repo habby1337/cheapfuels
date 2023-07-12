@@ -30,14 +30,17 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
         getByID(parseInt(id)),
         {
           pending: 'Loading...',
-          success: 'Car data loaded',
+          // success: 'Car data loaded',
           error: 'Error loading car data',
         },
         { toastId: 'carData', autoClose: 2000 }
       )
       .then((data) => {
         //TODO ADD TOAST
-        if (!data) return toast.error('No data found');
+        if (!data)
+          return toast.error('Hey, i believe this car does not exist :(', {
+            toastId: 'noCar',
+          });
         //set the form with the data
         setValue('fuelType', data.fuelType);
         setValue('desiredPrice', data.desiredPrice);

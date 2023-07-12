@@ -42,6 +42,12 @@ const MyCars = () => {
         { toastId: 'carData', autoClose: 2000 }
       )
       .then((data) => {
+        if (!data.length || data.length === 0)
+          return toast.info('Hey, looks like you have no cars yet, add one!', {
+            toastId: 'noCars',
+            position: 'top-center',
+            autoClose: 7000,
+          });
         setCarData(data);
       })
       .catch((error) => {
