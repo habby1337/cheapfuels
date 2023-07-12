@@ -6,7 +6,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { FormInputs } from '@/Shared/Interfaces/interfaces';
 
-const From = () => {
+const Form = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -129,4 +129,4 @@ const From = () => {
   );
 };
 
-export default From;
+export default Form;
