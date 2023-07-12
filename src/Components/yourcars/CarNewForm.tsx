@@ -4,6 +4,7 @@ import Select from 'react-select';
 
 import { useIndexedDBStore } from 'use-indexeddb';
 import { VehicleData } from '@/Shared/Interfaces/interfaces';
+import { toast } from 'react-toastify';
 
 interface Props {
   onNewCarAdded: () => void;
@@ -27,7 +28,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
     add: (vehicle: VehicleData) => Promise<number>;
   };
 
-  const onSubmit: SubmitHandler<VehicleData> = async (data) => {
+  const onSubmit: SubmitHandler<VehicleData> = (data) => {
     const {
       carName,
       carBrand,
@@ -37,26 +38,31 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       fuelType,
     }: VehicleData = data;
 
-    await add({
-      carName,
-      carBrand,
-      carModel,
-      carYear,
-      desiredPrice,
-      fuelType,
-    })
+    toast
+      .promise(
+        add({
+          carName,
+          carBrand,
+          carModel,
+          carYear,
+          desiredPrice,
+          fuelType,
+        }),
+        {
+          pending: 'Adding new vehicle...',
+          success: 'Vehicle added',
+          error: 'Error adding vehicle',
+        },
+        { toastId: 'addVehicle' }
+      )
       .then((d) => {
-        console.log(`Added vehicle with id ${d}`);
+        toast.success(`Vehicle added with id ${d}`);
         onNewCarAdded();
       })
       .catch((errors) => {
-        console.log(errors);
+        toast.error(`Error adding vehicle ${errors as string}`);
       });
-
-    //reset the hook form
     resetForm();
-
-    //trigger the car view card to update
   };
 
   const resetForm = () => {
