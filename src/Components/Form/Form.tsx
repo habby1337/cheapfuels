@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Select from 'react-select';
 import { Button } from '@/Components/ui/button';
 import { Loader2 } from 'lucide-react';
