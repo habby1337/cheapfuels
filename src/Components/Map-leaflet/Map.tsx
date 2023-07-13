@@ -1,16 +1,16 @@
 // @ts-nocheck
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { useMap } from 'react-leaflet';
+// import { useMap } from 'react-leaflet';
 
 const Map = () => {
-  const map = useMap();
+  // const map = useMap();
 
   return (
     <MapContainer
       center={[51.505, -0.09]}
       zoom={13}
       scrollWheelZoom={false}
-      ref={map}
+      // ref={map}
       className='h-full rounded-lg'>
       <TileLayer
         className='hidden dark:block '

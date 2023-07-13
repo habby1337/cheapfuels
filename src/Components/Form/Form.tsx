@@ -47,7 +47,7 @@ const Form = () => {
 
     setVehicles(vehiclesList);
 
-    toast.success('Vehicles loaded');
+    // toast.success('Vehicles loaded');
 
     return;
   };
