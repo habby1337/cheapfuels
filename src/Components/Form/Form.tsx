@@ -86,86 +86,93 @@ const Form = () => {
   };
 
   return (
-    <div className='container px-0 '>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='grid justify-center grid-flow-row gap-4 p-4 rounded-md shadow-lg md:grid-flow-col md:flex-row dark:shadow-md justify-items-center bg-slate-200 dark:bg-slate-900'>
-        {/* selettore macchina */}
-        <div className='flex-row items-center justify-center'>
-          <Controller
-            control={control}
-            name='vehicleId'
-            rules={{ required: 'Select a vehicle' }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                classNames={classNamesStyles}
-                placeholder='Select vehicle'
-                isDisabled={isLoading}
-                // @ts-ignore: Unreachable code error
-                options={vehicles}
-              />
-            )}
-          />
-          {/* error message space */}
-          {errors.vehicleId && (
-            <span className='text-xs text-red-500'>
-              {errors.vehicleId.message}
-            </span>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className='grid w-full grid-cols-12 gap-2 p-4 px-4 py-5 rounded-md shadow-lg md:grid-cols-12 sm:p-6 md:justify-center md:grid-flow-col md:flex-row dark:shadow-md bg-slate-200 dark:bg-slate-900'>
+      {/* selettore macchina */}
+      <div className='w-full col-span-4 md:items-center md:justify-center'>
+        <Controller
+          control={control}
+          name='vehicleId'
+          rules={{ required: 'Select a vehicle' }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              classNames={classNamesStyles}
+              placeholder='Select vehicle'
+              isDisabled={isLoading}
+              options={vehicles}
+            />
           )}
-        </div>
-        {/* selettore ordine  */}
-        <div className='flex-row items-center justify-center'>
-          <Controller
-            control={control}
-            name='distance'
-            rules={{ required: 'Select a distance' }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                classNames={classNamesStyles}
-                placeholder='Select distance '
-                isDisabled={isLoading}
-              />
-            )}
-          />
-          {errors.distance && (
-            <span className='text-xs text-red-500'>
-              {errors.distance.message}
-            </span>
+        />
+        {/* error message space */}
+        {errors.vehicleId && (
+          <span className='text-xs text-red-500'>
+            {errors.vehicleId.message}
+          </span>
+        )}
+      </div>
+      {/* selettore ordine  */}
+      <div className='w-full col-span-4 md:items-center md:justify-center'>
+        <Controller
+          control={control}
+          name='distance'
+          rules={{ required: 'Select a distance' }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              classNames={classNamesStyles}
+              placeholder='Select distance '
+              isDisabled={isLoading}
+              options={[
+                { value: '1', label: '1 km' },
+                { value: '5', label: '5 km' },
+                { value: '10', label: '10 km' },
+                { value: '25', label: '25 km' },
+                { value: '50', label: '50 km' },
+                { value: '100', label: '100 km' },
+              ]}
+            />
           )}
-        </div>
-        {/* selettore distanza */}
-        <div className='flex-row items-center justify-center'>
-          <Controller
-            control={control}
-            name='priceOrder'
-            rules={{ required: 'Select a price order' }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                classNames={classNamesStyles}
-                placeholder='Select price order'
-                isDisabled={isLoading}
-                options={[
-                  { value: 'asc', label: 'Crescente' },
-                  { value: 'desc', label: 'Decrescente' },
-                ]}
-              />
-            )}
-          />
-          {errors.priceOrder && (
-            <span className='text-xs text-red-500'>
-              {errors.priceOrder.message}
-            </span>
+        />
+        {errors.distance && (
+          <span className='text-xs text-red-500'>
+            {errors.distance.message}
+          </span>
+        )}
+      </div>
+      {/* selettore distanza */}
+      <div className='w-full col-span-4 md:items-center md:justify-center'>
+        <Controller
+          control={control}
+          name='priceOrder'
+          rules={{ required: 'Price order' }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              classNames={classNamesStyles}
+              placeholder='Price order'
+              isDisabled={isLoading}
+              options={[
+                { value: 'asc', label: 'Crescente' },
+                { value: 'desc', label: 'Decrescente' },
+              ]}
+            />
           )}
-        </div>
-        {/* bottone submit */}
-        <Button disabled={isLoading}>
-          <ButtonText />
-        </Button>
-      </form>
-    </div>
+        />
+        {errors.priceOrder && (
+          <span className='text-xs text-red-500'>
+            {errors.priceOrder.message}
+          </span>
+        )}
+      </div>
+      {/* bottone submit */}
+      <Button
+        disabled={isLoading}
+        className='w-full col-span-12 md:col-span-3'>
+        <ButtonText />
+      </Button>
+    </form>
   );
 };
 
