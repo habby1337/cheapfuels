@@ -40,7 +40,7 @@ const Form = () => {
     const vehiclesList: VehicleDataSelectList[] = data.map((vehicle) => {
       return {
         value: String(vehicle.id),
-        label: `${vehicle.carBrand} ${vehicle.carModel} ${vehicle.carYear}`,
+        label: `${vehicle.carName} (${vehicle.carBrand} ${vehicle.carModel})`,
       };
     });
 
