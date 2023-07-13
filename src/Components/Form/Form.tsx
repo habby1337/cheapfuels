@@ -4,24 +4,62 @@ import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-import { FormInputs } from '@/Shared/Interfaces/interfaces';
+import {
+  FormInputs,
+  VehicleDataSelectList,
+  VehicleDataWithId,
+} from '@/Shared/Interfaces/interfaces';
+
+import { useIndexedDBStore } from 'use-indexeddb';
+import { toast } from 'react-toastify';
 
 const Form = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [vehicles, setVehicles] = useState<VehicleDataSelectList[]>([]);
+  const { getAll } = useIndexedDBStore('vehicles') as {
+    getAll: () => Promise<VehicleDataWithId[]>;
+  };
 
   useEffect(() => {
     setIsLoading(true);
+    getAll()
+      .then((data) => populateVehiclesList(data))
+      .catch((err) => toast.error(`Error getting vehicles ${err as string}`));
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   }, []);
 
+  const populateVehiclesList = (data: VehicleDataWithId[]) => {
+    if (!data) {
+      toast.error('No vehicles found');
+      return;
+    }
+
+    const vehiclesList: VehicleDataSelectList[] = data.map((vehicle) => {
+      return {
+        value: String(vehicle.id),
+        label: `${vehicle.carBrand} ${vehicle.carModel} ${vehicle.carYear}`,
+      };
+    });
+
+    setVehicles(vehiclesList);
+
+    toast.success('Vehicles loaded');
+
+    return;
+  };
+
   const classNamesStyles = {
     control: () =>
       ' bg-slate-900 dark:bg-slate-800 dark:border-slate-700 rounded-xl border-slate-200',
-    singleValue: () => 'text-white',
-    placeholder: () => 'text-white',
+    singleValue: () => 'dark:text-white',
     menu: () => 'bg-slate-900 dark:bg-slate-800',
+    option: () =>
+      'dark:text-white dark:bg-slate-800  dark:hover:text-slate-600 dark:hover:bg-slate-200 dark:selected:bg-slate-300 dark:selected:text-slate-600',
+    input: () => 'dark:text-white',
+    valueContainer: () => 'dark:text-white',
   };
 
   const ButtonText = () => {
@@ -64,6 +102,8 @@ const Form = () => {
                 classNames={classNamesStyles}
                 placeholder='Select vehicle'
                 isDisabled={isLoading}
+                // @ts-ignore: Unreachable code error
+                options={vehicles}
               />
             )}
           />

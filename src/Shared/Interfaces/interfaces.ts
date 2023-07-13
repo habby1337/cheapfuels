@@ -47,3 +47,9 @@ export interface VehicleData {
 export interface VehicleDataWithId extends VehicleData {
   id: number;
 }
+
+export interface VehicleDataSelectList {
+  readonly label: string;
+  readonly value: string;
+  readonly isDisabled?: boolean;
+}
