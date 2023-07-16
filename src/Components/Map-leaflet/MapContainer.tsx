@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 import Map from './Map';
 import { FuelsApiClient } from 'osservaprezzi-carburanti-node';
+
 import { SearchByZoneCriteria } from '@/Shared/Interfaces/interfaces';
 import { FuelType, RefuelingMode } from '@/Shared/Interfaces/enums';
+
+// import axios from 'axios';
 
 const MapContainer = () => {
   const client = new FuelsApiClient();
@@ -24,6 +27,20 @@ const MapContainer = () => {
     searchResponse
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
+    // const body = { points: [{ lat: 41.890546, lng: 12.49425 }], radius: 5 };
+
+    // const request = axios.post(
+    //   'https://carburanti.mise.gov.it/ospzApi/search/zone',
+    //   JSON.stringify(body),
+    //   {
+    //     headers: {
+    //       'Access-Control-Allow-Origin': '*',
+    //       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    //     },
+    //   }
+    // );
+
+    // request.then((data) => console.log(data)).catch((err) => console.log(err));
   }, []);
 
   return (
