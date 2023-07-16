@@ -1,5 +1,10 @@
 interface CircleFromPoint {
-  (lat: number, lng: number, rad: number, details?: number): number[][];
+  (
+    lat: number,
+    lng: number,
+    rad: number,
+    details?: number
+  ): { lat: number; lng: number }[];
 }
 
 export const getCircleFromPoint: CircleFromPoint = (
@@ -8,7 +13,7 @@ export const getCircleFromPoint: CircleFromPoint = (
   rad,
   details = 24
 ) => {
-  const points = [];
+  const points: { lat: number; lng: number }[] = [];
 
   const r = 6378.1; // Radius of the Earth
 
@@ -42,7 +47,7 @@ export const getCircleFromPoint: CircleFromPoint = (
       continue; // Skip null points
     }
 
-    points.push([pLat, pLng]);
+    points.push({ lat: pLat, lng: pLng });
   }
 
   return points;

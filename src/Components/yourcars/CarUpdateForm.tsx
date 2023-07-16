@@ -1,4 +1,4 @@
-import { FuelType, FuelTypeDescription } from '@/Shared/Interfaces/enums';
+import { FuelType, RefuelingMode } from '@/Shared/Interfaces/enums';
 import { Controller, useForm, SubmitHandler } from 'react-hook-form';
 import Select from 'react-select';
 
@@ -43,6 +43,7 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
           });
         //set the form with the data
         setValue('fuelType', data.fuelType);
+        setValue('refuelingMode', data.refuelingMode);
         setValue('desiredPrice', data.desiredPrice);
         setValue('carName', data.carName);
         setValue('carBrand', data.carBrand);
@@ -104,9 +105,14 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
       .catch((error) => toast.error(`Error deleting car ${error as string}`));
   };
 
-  const options = Object.keys(FuelType).map((key) => ({
+  const fuelTypeOptions = Object.keys(FuelType).map((key) => ({
     value: FuelType[key as keyof typeof FuelType],
-    label: FuelTypeDescription[key as keyof typeof FuelTypeDescription],
+    label: key as keyof typeof FuelType,
+  }));
+
+  const fuelingModeOptions = Object.keys(RefuelingMode).map((key) => ({
+    value: RefuelingMode[key as keyof typeof RefuelingMode],
+    label: key as keyof typeof RefuelingMode,
   }));
 
   const classesStyle = {
@@ -135,14 +141,41 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
             <Select
               {...field}
               classNames={classesStyle}
-              placeholder="Seleziona l'ordine "
-              options={options}
+              placeholder='Select fuel type'
+              options={fuelTypeOptions}
             />
           )}
         />
         {errors.fuelType && (
           <span className='text-xs text-red-500'>
             {errors.fuelType.message}
+          </span>
+        )}
+      </div>
+
+      <div className='mb-4'>
+        <label
+          htmlFor='refuelingMode'
+          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
+          Refueling Mode
+        </label>
+        <Controller
+          control={control}
+          name='refuelingMode'
+          rules={{ required: 'Select refueling mode' }}
+          defaultValue={null}
+          render={({ field }) => (
+            <Select
+              {...field}
+              classNames={classesStyle}
+              placeholder='Select fueling mode'
+              options={fuelingModeOptions}
+            />
+          )}
+        />
+        {errors.refuelingMode && (
+          <span className='text-xs text-red-500'>
+            {errors.refuelingMode.message}
           </span>
         )}
       </div>
