@@ -1,19 +1,25 @@
 // @ts-nocheck
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { usePosition } from '../hooks/usePosition';
+import { useEffect, useState } from 'react';
 
-//import { useMap } from 'react-leaflet';
+import { useMap } from 'react-leaflet';
+type mapCoords = [number, number];
 
 const Map = () => {
-  //const map = useMap();
+  const { latitude, longitude, error } = usePosition();
 
+  const [mapCenter, setMapCenter] = useState<mapCoords>([41.902782, 12.496366]);
+
+  useEffect(() => {
+    if (latitude && longitude) setMapCenter([latitude, longitude]);
+  }, []);
 
   return (
     <MapContainer
-      center={[51.505, -0.09]}
+      center={mapCenter}
       zoom={13}
       scrollWheelZoom={false}
-
-      // ref={map}
       className='h-full rounded-lg'>
       <TileLayer
         className='hidden dark:block '
@@ -25,7 +31,8 @@ const Map = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url='https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
       />
-      <Marker position={[51.505, -0.09]}>
+
+      <Marker position={mapCenter}>
         <Popup>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
