@@ -9,16 +9,29 @@ import {
   FormInputs,
   VehicleDataSelectList,
   VehicleDataWithId,
+  SearchByZoneCriteria,
 } from '@/Shared/Interfaces/interfaces';
+
+import { FuelType, RefuelingMode } from '@/Shared/Interfaces/enums';
+
+import { FuelsApiClient } from 'osservaprezzi-carburanti-node';
 
 import { useIndexedDBStore } from 'use-indexeddb';
 import { toast } from 'react-toastify';
+import { usePosition } from '../hooks/usePosition';
+import { getCircleFromPoint } from '@/Shared/Services/getCircleFromPoint';
 
 const Form = () => {
+  const backend = new FuelsApiClient(
+    'http://5.189.131.174:8443/https://carburanti.mise.gov.it/ospzApi/'
+  );
+
+  const { latitude: lat, longitude: lng, error: coordErr } = usePosition();
   const [isLoading, setIsLoading] = useState(false);
   const [vehicles, setVehicles] = useState<VehicleDataSelectList[]>([]);
-  const { getAll } = useIndexedDBStore('vehicles') as {
+  const { getAll, getByID } = useIndexedDBStore('vehicles') as {
     getAll: () => Promise<VehicleDataWithId[]>;
+    getByID: (id: number) => Promise<VehicleDataWithId>;
   };
 
   useEffect(() => {
@@ -81,7 +94,41 @@ const Form = () => {
   } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
+    if (coordErr) {
+      toast.error('Error getting coordinates');
+      return;
+    }
+
+    const searchPoints = getCircleFromPoint(
+      lat,
+      lng,
+      Number(data.distance.value) * 1000,
+      50
+    );
+
+    const vehicleId = Number(data.vehicleId.value);
+    getByID(vehicleId)
+      .then((vehicle) => {
+        const searchCriteria: SearchByZoneCriteria = {
+          points: searchPoints,
+          fuelType: vehicle.fuelType?.value as FuelType,
+          refuelingMode: vehicle.refuelingMode?.value as RefuelingMode,
+          priceOrder: data.priceOrder.value,
+        };
+
+        const response = backend.search.byZone(searchCriteria);
+
+        response
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+        // console.log(searchCriteria, 'searchCriteria');
+      })
+      .catch((err) => toast.error(`Error getting vehicle ${err as string}`));
   };
 
   return (

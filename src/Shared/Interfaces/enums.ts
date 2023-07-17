@@ -1,7 +1,7 @@
 export enum RefuelingMode {
+  ALL = 'x',
   SELF = '1',
   SERVED = '0',
-  ALL = 'x',
 }
 
 export enum FuelType {
@@ -12,14 +12,4 @@ export enum FuelType {
   GPL = '4',
   GCN = '323',
   GNL = '324',
-}
-
-export enum FuelTypeDescription {
-  ALL = 'Tutti',
-  PETROL = 'Benzina',
-  DIESEL = 'Gasolio',
-  METHANE = 'Metano',
-  GPL = 'GPL',
-  GCN = 'Gas naturale',
-  GNL = 'Gas naturale liquido',
 }

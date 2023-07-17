@@ -3,7 +3,7 @@ import Map from './Map';
 
 const MapContainer = () => {
   useEffect(() => {
-    console.log('expecting call to osservaprezzi');
+    console.log('MapContainer.tsx');
   }, []);
 
   return (

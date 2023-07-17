@@ -8,9 +8,6 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.14)(react@18.2.0)
-  axios:
-    specifier: ^1.4.0
-    version: 1.4.0
   class-variance-authority:
     specifier: ^0.6.1
     version: 0.6.1
@@ -20,6 +17,9 @@ dependencies:
   lucide-react:
     specifier: ^0.259.0
     version: 0.259.0(react@18.2.0)
+  osservaprezzi-carburanti-node:
+    specifier: ^1.0.7
+    version: 1.0.7
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -1001,12 +1001,11 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /axios@1.4.0:
-    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+  /axios@0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
-      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -1575,6 +1574,10 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /http-status-codes@2.2.0:
+    resolution: {integrity: sha512-feERVo9iWxvnejp3SEfm/+oNG517npqL2/PIA8ORjyOZjGC7TwCRQsZylciLS64i6pJ0wRYz3rkXLRwbtFa8Ng==}
+    dev: false
+
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
@@ -1812,6 +1815,16 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /osservaprezzi-carburanti-node@1.0.7:
+    resolution: {integrity: sha512-E0occWsaYNdUP3zCv52cp37BId0UzF8jVFg6VsV1TDCQwAb4r5XuOJHu+p0kMHYMUFsZ68C7gBTs4AJqBmPZNw==}
+    engines: {node: '>= 12.22.12'}
+    dependencies:
+      axios: 0.27.2
+      http-status-codes: 2.2.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -2013,10 +2026,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: false
-
-  /proxy-from-env@1.1.0:
-    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
     dev: false
 
   /punycode@2.3.0:
