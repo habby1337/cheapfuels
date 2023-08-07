@@ -42,6 +42,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       carModel,
       carYear,
       desiredPrice,
+      refuelingMode,
       fuelType,
     }: VehicleData = data;
 
@@ -53,6 +54,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
           carModel,
           carYear,
           desiredPrice,
+          refuelingMode,
           fuelType,
         }),
         {
