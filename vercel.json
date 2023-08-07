@@ -1,3 +1,7 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "crons": [
+    { "path": "/api/cron/weeklyMisePrices", "schedule": "0 13 * * 4" },
+    { "path": "/api/cron/cleanWeeklyMisePrices", "schedule": "0 0 */7 * *" }
+  ]
 }
