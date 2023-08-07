@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { useIndexedDBStore } from 'use-indexeddb';
 import { VehicleData } from '@/Shared/Interfaces/interfaces';
 import { toast } from 'react-toastify';
+import AvgPriceLabel from '../AvgPriceLabel/AvgPriceLabel';
 
 interface Props {
   onNewCarAdded: () => void;
@@ -16,6 +17,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm<VehicleData & FuelType>();
 
@@ -40,6 +42,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       carModel,
       carYear,
       desiredPrice,
+      refuelingMode,
       fuelType,
     }: VehicleData = data;
 
@@ -51,6 +54,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
           carModel,
           carYear,
           desiredPrice,
+          refuelingMode,
           fuelType,
         }),
         {
@@ -162,14 +166,7 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
           </span>
         )}
         {/* create an under label */}
-        <div className='flex items-center justify-between px-1 mt-2'>
-          <span className='text-xs text-gray-600 dark:text-gray-400'>
-            Avg: 1.40 €
-          </span>
-          <span className='text-xs text-gray-600 dark:text-gray-400'>
-            Min: 1.20 €
-          </span>
-        </div>
+        <AvgPriceLabel fuelType={watch('fuelType')} />
       </div>
 
       <div className='mb-4'>

@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import AvgPriceLabel from '../AvgPriceLabel/AvgPriceLabel';
 
 interface Props {
   onNewCarAdded: () => void;
@@ -65,6 +66,7 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     setValue,
   } = useForm<VehicleDataWithId>();
 
@@ -202,14 +204,7 @@ const CarUpdateForm = ({ onNewCarAdded }: Props) => {
           </span>
         )}
         {/* create an under label */}
-        <div className='flex items-center justify-between px-1 mt-2'>
-          <span className='text-xs text-gray-600 dark:text-gray-400'>
-            Avg: 1.40 €
-          </span>
-          <span className='text-xs text-gray-600 dark:text-gray-400'>
-            Min: 1.20 €
-          </span>
-        </div>
+        <AvgPriceLabel fuelType={watch('fuelType')} />
       </div>
 
       <div className='mb-4'>

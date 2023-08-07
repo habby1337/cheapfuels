@@ -4,6 +4,7 @@ import { Button } from '@/Components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
 
 import {
   FormInputs,
@@ -14,18 +15,12 @@ import {
 
 import { FuelType, RefuelingMode } from '@/Shared/Interfaces/enums';
 
-import { FuelsApiClient } from 'osservaprezzi-carburanti-node';
-
 import { useIndexedDBStore } from 'use-indexeddb';
 import { toast } from 'react-toastify';
 import { usePosition } from '../hooks/usePosition';
 import { getCircleFromPoint } from '@/Shared/Services/getCircleFromPoint';
 
 const Form = () => {
-  const backend = new FuelsApiClient(
-    'http://5.189.131.174:8443/https://carburanti.mise.gov.it/ospzApi/'
-  );
-
   const { latitude: lat, longitude: lng, error: coordErr } = usePosition();
   const [isLoading, setIsLoading] = useState(false);
   const [vehicles, setVehicles] = useState<VehicleDataSelectList[]>([]);
@@ -115,8 +110,9 @@ const Form = () => {
           refuelingMode: vehicle.refuelingMode?.value as RefuelingMode,
           priceOrder: data.priceOrder.value,
         };
+        console.log(searchCriteria, 'searchCriteria');
 
-        const response = backend.search.byZone(searchCriteria);
+        const response = axios.post('/api/searchByZone', searchCriteria);
 
         response
           .then((res) => {

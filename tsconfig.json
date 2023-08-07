@@ -11,11 +11,12 @@
     },
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    // "allowImportingTsExtensions": true,
+    // "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "incremental": true,
     "jsx": "react-jsx",
 
     /* Linting */
@@ -24,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "./api/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
