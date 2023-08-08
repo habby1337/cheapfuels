@@ -45,7 +45,10 @@ export const usePosition = () => {
       return;
     }
 
-    const watcher = geo.watchPosition(onChange, onError);
+    const watcher = geo.watchPosition(onChange, onError, {
+      enableHighAccuracy: true,
+      maximumAge: 6000,
+    });
     return () => geo.clearWatch(watcher);
   }, []);
   return { ...position, error } as UsePosition;

@@ -20,9 +20,17 @@ import { toast } from 'react-toastify';
 import { usePosition } from '../hooks/usePosition';
 import { getCircleFromPoint } from '@/Shared/Services/getCircleFromPoint';
 
+import { useStore } from '@/Shared/Store/store';
+
 const Form = () => {
+  const setFuelStations = useStore((state) => state.setFuelStations);
+  const setBrandList = useStore((state) => state.setBrandList);
+  const [isLoading, setIsLoading] = useStore((state) => [
+    state.isLoading,
+    state.setIsLoading,
+  ]);
   const { latitude: lat, longitude: lng, error: coordErr } = usePosition();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCar, setIsLoadingCar] = useState(false);
   const [vehicles, setVehicles] = useState<VehicleDataSelectList[]>([]);
   const { getAll, getByID } = useIndexedDBStore('vehicles') as {
     getAll: () => Promise<VehicleDataWithId[]>;
@@ -30,13 +38,13 @@ const Form = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoadingCar(true);
     getAll()
       .then((data) => populateVehiclesList(data))
       .catch((err) => toast.error(`Error getting vehicles ${err as string}`));
 
     setTimeout(() => {
-      setIsLoading(false);
+      setIsLoadingCar(false);
     }, 1000);
   }, []);
 
@@ -70,7 +78,7 @@ const Form = () => {
   };
 
   const ButtonText = () => {
-    if (isLoading) {
+    if (isLoadingCar) {
       return (
         <>
           <Loader2 className='w-4 h-4 mr-2 animate-spin' />
@@ -89,6 +97,7 @@ const Form = () => {
   } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
+    setIsLoading(true);
     if (coordErr) {
       toast.error('Error getting coordinates');
       return;
@@ -110,19 +119,24 @@ const Form = () => {
           refuelingMode: vehicle.refuelingMode?.value as RefuelingMode,
           priceOrder: data.priceOrder.value,
         };
-        console.log(searchCriteria, 'searchCriteria');
 
         const response = axios.post('/api/searchByZone', searchCriteria);
+        const brandList = axios.get('/api/brandList');
 
-        response
+        Promise.all([response, brandList])
           .then((res) => {
-            console.log(res);
+            const fuelStations = res[0].data;
+            const brandList = res[1].data;
+            setFuelStations(fuelStations);
+            setBrandList(brandList);
+            console.log(fuelStations, 'fuelStations', brandList, 'brandList');
           })
           .catch((err) => {
-            console.log(err);
+            toast.error(`Error getting fuel stations: ${err as string}`);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
-
-        // console.log(searchCriteria, 'searchCriteria');
       })
       .catch((err) => toast.error(`Error getting vehicle ${err as string}`));
   };
@@ -142,7 +156,7 @@ const Form = () => {
               {...field}
               classNames={classNamesStyles}
               placeholder='Select vehicle'
-              isDisabled={isLoading}
+              isDisabled={isLoadingCar || isLoading}
               options={vehicles}
             />
           )}
@@ -165,7 +179,7 @@ const Form = () => {
               {...field}
               classNames={classNamesStyles}
               placeholder='Select distance '
-              isDisabled={isLoading}
+              isDisabled={isLoadingCar || isLoading}
               options={[
                 { value: '1', label: '1 km' },
                 { value: '5', label: '5 km' },
@@ -194,7 +208,7 @@ const Form = () => {
               {...field}
               classNames={classNamesStyles}
               placeholder='Price order'
-              isDisabled={isLoading}
+              isDisabled={isLoadingCar || isLoading}
               options={[
                 { value: 'asc', label: 'Crescente' },
                 { value: 'desc', label: 'Decrescente' },
@@ -210,7 +224,7 @@ const Form = () => {
       </div>
       {/* bottone submit */}
       <Button
-        disabled={isLoading}
+        disabled={isLoadingCar || isLoading}
         className='w-full col-span-12 md:col-span-3'>
         <ButtonText />
       </Button>
