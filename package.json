@@ -20,6 +20,8 @@
     "clsx": "^1.2.1",
     "dotenv": "^16.3.1",
     "jsonwebtoken": "^9.0.1",
+    "leaflet": "^1.9.4",
+    "leaflet-gesture-handling": "^1.2.2",
     "lucide-react": "^0.259.0",
     "mongodb": "^5.7.0",
     "osservaprezzi-carburanti-node": "^1.0.7",
