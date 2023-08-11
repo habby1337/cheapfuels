@@ -102,10 +102,10 @@ const FuelStationsMarkers = () => {
       Object.keys(fuelStations).length === 0 ||
       fuelStations?.results?.length === 0
     )
-      return toast.error('Nessuna stazione di servizio trovata');
+      return;
 
     if (fuelStations.success === false || !fuelStations)
-      return toast.error('Errore nel caricamento delle stazioni di servizio');
+      toast.error('Errore nel caricamento delle stazioni di servizio');
 
     if (fuelStations.success === true && fuelStations.results.length != 0) {
       const markers = fuelStations.results.map((fuelStation) => {
