@@ -6,12 +6,14 @@ import { useIndexedDBStore } from 'use-indexeddb';
 import { VehicleData } from '@/Shared/Interfaces/interfaces';
 import { toast } from 'react-toastify';
 import AvgPriceLabel from '../AvgPriceLabel/AvgPriceLabel';
+import { useStore } from '@/Shared/Store/store';
 
 interface Props {
   onNewCarAdded: () => void;
 }
 
 const CarNewForm = ({ onNewCarAdded }: Props) => {
+  const isInterfaceLoading = useStore((state) => state.isInterfaceLoading);
   const {
     control,
     register,
@@ -80,8 +82,13 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
   };
 
   const classesStyle = {
+    container: () =>
+      isInterfaceLoading
+        ? ' bg-gray-300 text-gray-500 cursor-not-allowed animate-pulse rounded-md '
+        : '',
     control: () =>
-      ' dark:bg-slate-800 dark:border-slate-700 rounded-xl border-slate-200',
+      ' dark:bg-slate-800 dark:border-slate-700 border-slate-200 rounded-md',
+
     singleValue: () => ' dark:text-white',
     placeholder: () => ' dark:text-gray-700',
     menu: () => ' dark:bg-slate-800',
@@ -93,8 +100,15 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='fuelType'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Fuel Type
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Fuel Type'
+          )}
         </label>
         <Controller
           control={control}
@@ -105,8 +119,9 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
             <Select
               {...field}
               classNames={classesStyle}
-              placeholder='Select fuel type'
+              placeholder={isInterfaceLoading ? '' : 'Select fuel type'}
               options={fuelTypeOptions}
+              isDisabled={isInterfaceLoading}
             />
           )}
         />
@@ -120,8 +135,15 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='refuelingMode'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Refueling Mode
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Refueling Mode'
+          )}
         </label>
         <Controller
           control={control}
@@ -132,8 +154,9 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
             <Select
               {...field}
               classNames={classesStyle}
-              placeholder='Select refueling mode'
+              placeholder={isInterfaceLoading ? '' : 'Select refueling mode'}
               options={fuelingModeOptions}
+              isDisabled={isInterfaceLoading}
             />
           )}
         />
@@ -147,14 +170,22 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='desiredPrice'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Desired Price (± 0.20 cents)
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            ' Desired Price (± 0.20 cents)'
+          )}
         </label>
         <input
           type='number'
           id='desiredPrice'
           step='0.01'
-          placeholder='1.80'
+          placeholder={isInterfaceLoading ? '' : 'ex: 1.60'}
+          disabled={isInterfaceLoading}
           className='block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800'
           {...register('desiredPrice', {
             required: 'Insert a desired price',
@@ -172,13 +203,21 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='carName'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Car Name
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Vehicle Name'
+          )}
         </label>
         <input
           type='text'
           id='carName'
-          placeholder='My Car'
+          placeholder={isInterfaceLoading ? '' : "ex: Mike's car"}
+          disabled={isInterfaceLoading}
           className='block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800'
           {...register('carName', { required: 'Add a custom name' })}
         />
@@ -190,16 +229,24 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='carBrand'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Vehicle Brand
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Vehicle Brand'
+          )}
         </label>
         <input
           type='text'
           id='carBrand'
-          placeholder='Ford'
+          placeholder={isInterfaceLoading ? '' : 'ex: BMW'}
+          disabled={isInterfaceLoading}
           className='block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800'
           {...register('carBrand', {
-            required: 'Insert the car brand',
+            required: 'Insert the Vehicle brand',
           })}
         />
         {errors.carBrand && (
@@ -212,16 +259,24 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='carModel'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Vehicle Model
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Vehicle Model'
+          )}
         </label>
         <input
           type='text'
           id='carModel'
-          placeholder='Mustang'
+          placeholder={isInterfaceLoading ? '' : 'ex: 320d'}
+          disabled={isInterfaceLoading}
           className='block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800'
           {...register('carModel', {
-            required: 'Insert the car model',
+            required: 'Insert the Vehicle model',
           })}
         />
         {errors.carModel && (
@@ -234,13 +289,21 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       <div className='mb-4'>
         <label
           htmlFor='carYear'
-          className='text-sm font-medium text-gray-700 dark:text-gray-200'>
-          Vehicle Production Year
+          className={
+            'text-sm font-medium text-gray-700 dark:text-gray-200' +
+              isInterfaceLoading && 'animate-pulse'
+          }>
+          {isInterfaceLoading ? (
+            <span className='inline-block w-20 h-4 bg-gray-300 rounded-md animate-pulse'></span>
+          ) : (
+            'Vehicle Production Year'
+          )}
         </label>
         <input
           type='number'
           id='carYear'
-          placeholder='2019'
+          placeholder={isInterfaceLoading ? '' : 'ex: 2015'}
+          disabled={isInterfaceLoading}
           className='block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800'
           {...register('carYear', {
             required: 'Add the vehicle production year',
@@ -252,18 +315,25 @@ const CarNewForm = ({ onNewCarAdded }: Props) => {
       </div>
 
       <div className='flex justify-end mt-6'>
-        <button
-          type='submit'
-          className='px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500'>
-          Add
-        </button>
-
-        <button
-          type='button'
-          onClick={resetForm}
-          className='px-4 py-2 ml-4 text-sm font-medium text-red-500 bg-transparent border border-red-500 rounded-md hover:text-white hover:bg-red-500 focus:outline-none focus:border-red-500'>
-          Reset
-        </button>
+        {isInterfaceLoading ? (
+          <span className='w-20 h-10 px-4 bg-gray-300 rounded-md animate-pulse'></span>
+        ) : (
+          <button
+            type='submit'
+            className='px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500'>
+            Add
+          </button>
+        )}
+        {isInterfaceLoading ? (
+          <span className='w-20 h-10 px-4 py-2 ml-4 bg-gray-300 rounded-md animate-pulse'></span>
+        ) : (
+          <button
+            type='button'
+            onClick={resetForm}
+            className='px-4 py-2 ml-4 text-sm font-medium text-red-500 bg-transparent border border-red-500 rounded-md hover:text-white hover:bg-red-500 focus:outline-none focus:border-red-500'>
+            Reset
+          </button>
+        )}
       </div>
     </form>
   );

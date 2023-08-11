@@ -4,10 +4,11 @@ import { useStore } from '@/Shared/Store/store';
 
 const MapContainer = () => {
   const isLoading = useStore((state) => state.isLoading);
+  const isInterfaceLoading = useStore((state) => state.isInterfaceLoading);
 
   return (
-    <div className='container block px-0 mt-3 border-4 h-5/6 bg-slate-200 dark:bg-slate-900 rounded-xl backdrop-blur place-items-center'>
-      {isLoading ? (
+    <div className='container block px-0 mt-3 bg-gray-300 border-4 h-5/6 dark:bg-slate-900 rounded-xl backdrop-blur place-items-center'>
+      {isLoading || isInterfaceLoading ? (
         <div className='flex flex-col items-center justify-center h-full transition duration-500 ease-in-out'>
           {/* <div className='w-20 h-20 mb-5 border-b-2 border-gray-900 rounded-full animate-spin'></div> */}
           <svg
@@ -19,6 +20,7 @@ const MapContainer = () => {
             viewBox='0 0 100 100'
             enableBackground='new 0 0 0 0'>
             <circle
+              className='fill-current'
               fill='#fff'
               stroke='none'
               cx='25%'
@@ -33,6 +35,7 @@ const MapContainer = () => {
               />
             </circle>
             <circle
+              className='fill-current'
               fill='#fff'
               stroke='none'
               cx='50%'
@@ -47,6 +50,7 @@ const MapContainer = () => {
               />
             </circle>
             <circle
+              className='fill-current'
               fill='#fff'
               stroke='none'
               cx='75%'

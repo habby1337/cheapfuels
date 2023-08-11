@@ -42,13 +42,49 @@ const ThemeHandler = (props: Props) => {
 
   return (
     <div className={props.className}>
-      <Button
+      {/* <Button
         variant='outline'
         size='icon'
-        className='bg-transparent'
-        onClick={toggleTheme}>
-        <Icon />
-      </Button>
+        className='w-full h-full bg-transparent border-gray-400 dark:border-gray-700 dark:hover:bg-gray-700 dark:hover:text-white hover:bg-gray-700 hover:text-white'
+        onClick={toggleTheme}> */}
+      {/* <div
+          className={`transition-opacity duration-300 ${
+            theme === 'dark' ? 'opacity-0' : 'opacity-100'
+          }`}>
+          <Moon size={props.iconSize} />
+        </div>
+        <div
+          className={`transition-opacity duration-300 ${
+            theme === 'light' ? 'opacity-0' : 'opacity-100'
+          }`}>
+          <Sun size={props.iconSize} />
+        </div> */}
+
+      {/* </Button> */}
+      <div className='toggleWrapper'>
+        <input
+          type='checkbox'
+          className='dn'
+          id='dn'
+          checked={theme === 'dark'}
+          onChange={toggleTheme}
+        />
+        <label
+          htmlFor='dn'
+          className='toggle'>
+          <span className='toggle__handler'>
+            <span className='crater crater--1'></span>
+            <span className='crater crater--2'></span>
+            <span className='crater crater--3'></span>
+          </span>
+          <span className='star star--1'></span>
+          <span className='star star--2'></span>
+          <span className='star star--3'></span>
+          <span className='star star--4'></span>
+          <span className='star star--5'></span>
+          <span className='star star--6'></span>
+        </label>
+      </div>
     </div>
   );
 };

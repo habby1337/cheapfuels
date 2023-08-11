@@ -10,6 +10,8 @@ interface SelectedCarStore {
   setFuelStations: (fuelStation: any) => void;
   brandList: [];
   setBrandList: (brandList: any) => void;
+  isInterfaceLoading: boolean;
+  setIsInterfaceLoading: (isInterfaceLoading: boolean) => void;
 }
 
 export const useStore = create<SelectedCarStore>()(
@@ -26,5 +28,9 @@ export const useStore = create<SelectedCarStore>()(
 
     brandList: [],
     setBrandList: (brandList: any) => set({ brandList }),
+
+    isInterfaceLoading: false,
+    setIsInterfaceLoading: (isInterfaceLoading: boolean) =>
+      set({ isInterfaceLoading }),
   }))
 );

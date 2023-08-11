@@ -1,9 +1,11 @@
 // @ts-nocheck
 import Select from 'react-select';
+import Creatable, { useCreatable } from 'react-select/creatable';
+
 import { Button } from '@/Components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, set, useForm } from 'react-hook-form';
 import axios from 'axios';
 
 import {
@@ -21,6 +23,7 @@ import { usePosition } from '../hooks/usePosition';
 import { getCircleFromPoint } from '@/Shared/Services/getCircleFromPoint';
 
 import { useStore } from '@/Shared/Store/store';
+import CreatableSelect from 'node_modules/react-select/dist/declarations/src/Creatable';
 
 const Form = () => {
   const setFuelStations = useStore((state) => state.setFuelStations);
@@ -28,6 +31,10 @@ const Form = () => {
   const [isLoading, setIsLoading] = useStore((state) => [
     state.isLoading,
     state.setIsLoading,
+  ]);
+  const [isInterfaceLoading, setIsInterfaceLoading] = useStore((state) => [
+    state.isInterfaceLoading,
+    state.setIsInterfaceLoading,
   ]);
   const { latitude: lat, longitude: lng, error: coordErr } = usePosition();
   const [isLoadingCar, setIsLoadingCar] = useState(false);
@@ -67,18 +74,22 @@ const Form = () => {
   };
 
   const classNamesStyles = {
+    container: () =>
+      isInterfaceLoading
+        ? ' bg-gray-300 text-gray-500 cursor-not-allowed animate-pulse rounded-md '
+        : '',
     control: () =>
       ' bg-slate-900 dark:bg-slate-800 dark:border-slate-700 rounded-xl border-slate-200',
     singleValue: () => 'dark:text-white',
     menu: () => 'bg-slate-900 dark:bg-slate-800',
     option: () =>
       'dark:text-white dark:bg-slate-800  dark:hover:text-slate-600 dark:hover:bg-slate-200 dark:selected:bg-slate-300 dark:selected:text-slate-600',
-    input: () => 'dark:text-white',
-    valueContainer: () => 'dark:text-white',
+    input: () => 'dark:text-white ',
+    valueContainer: () => 'dark:text-white ',
   };
 
   const ButtonText = () => {
-    if (isLoadingCar) {
+    if (isLoadingCar || isInterfaceLoading) {
       return (
         <>
           <Loader2 className='w-4 h-4 mr-2 animate-spin' />
@@ -141,10 +152,25 @@ const Form = () => {
       .catch((err) => toast.error(`Error getting vehicle ${err as string}`));
   };
 
+  const handleNewDistance = (value) => {
+    const numericValue = parseFloat(value.replace(',', '.'));
+    if (!isNaN(numericValue)) {
+      const distance = numericValue * 1000;
+      const distanceOption = {
+        value: String(distance),
+        label: `${value} km`,
+      };
+      return distanceOption;
+    }
+    return null; // Return null if the input is not a valid number
+  };
+
+  const [distanceOptionsList, setDistanceOptionsList] = useState([]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='grid w-full grid-cols-12 gap-2 p-4 px-4 py-5 rounded-md shadow-lg md:grid-cols-12 sm:p-6 md:justify-center md:grid-flow-col md:flex-row dark:shadow-md bg-slate-200 dark:bg-slate-900'>
+      className='grid w-full grid-cols-12 gap-2 p-4 px-4 py-5 rounded-md shadow-lg bg-slate-200 md:grid-cols-12 sm:p-6 md:justify-center md:grid-flow-col md:flex-row dark:shadow-md dark:bg-slate-900'>
       {/* selettore macchina */}
       <div className='w-full col-span-4 md:items-center md:justify-center'>
         <Controller
@@ -155,8 +181,13 @@ const Form = () => {
             <Select
               {...field}
               classNames={classNamesStyles}
-              placeholder='Select vehicle'
-              isDisabled={isLoadingCar || isLoading}
+              placeholder={
+                isInterfaceLoading
+                  ? // <span className='inline-block w-1/2 h-5 bg-gray-300 animate-pulse '></span>
+                    'Please wait'
+                  : 'Select vehicle'
+              }
+              isDisabled={isLoadingCar || isLoading || isInterfaceLoading}
               options={vehicles}
             />
           )}
@@ -175,19 +206,67 @@ const Form = () => {
           name='distance'
           rules={{ required: 'Select a distance' }}
           render={({ field }) => (
-            <Select
+            // <Select
+            //   {...field}
+            //   classNames={classNamesStyles}
+            //   placeholder={
+            //     isInterfaceLoading ? 'Please wait' : 'Select distance'
+            //   }
+            //   isDisabled={isLoadingCar || isLoading || isInterfaceLoading}
+            //   options={[
+            //     { value: '1', label: '1 km' },
+            //     { value: '5', label: '5 km' },
+            //     { value: '10', label: '10 km' },
+            //     { value: '25', label: '25 km' },
+            //     { value: '50', label: '50 km' },
+            //     { value: '100', label: '100 km' },
+            //   ]}
+            // />
+            <Creatable
               {...field}
               classNames={classNamesStyles}
-              placeholder='Select distance '
-              isDisabled={isLoadingCar || isLoading}
+              placeholder={
+                isInterfaceLoading ? 'Please wait' : 'Select distance'
+              }
+              isDisabled={isLoadingCar || isLoading || isInterfaceLoading}
               options={[
-                { value: '1', label: '1 km' },
-                { value: '5', label: '5 km' },
-                { value: '10', label: '10 km' },
-                { value: '25', label: '25 km' },
-                { value: '50', label: '50 km' },
-                { value: '100', label: '100 km' },
+                {
+                  label: 'Custom',
+                  options: distanceOptionsList,
+                },
+                {
+                  label: 'Standard',
+                  options: [
+                    { value: '1', label: '1 km' },
+                    { value: '5', label: '5 km' },
+                    { value: '10', label: '10 km' },
+                    { value: '25', label: '25 km' },
+                    { value: '50', label: '50 km' },
+                    { value: '100', label: '100 km' },
+                  ],
+                },
               ]}
+              formatCreateLabel={(inputValue) => `Create "${inputValue}" km`}
+              onCreateOption={(inputValue) => {
+                const newOption = handleNewDistance(inputValue);
+              }}
+              getNewOptionData={(inputValue, optionLabel) =>
+                handleNewDistance(inputValue)
+              }
+              onCreateOption={(inputValue) => {
+                const newOption = handleNewDistance(inputValue);
+                if (newOption) {
+                  const existingValues = distanceOptionsList.map(
+                    (option) => option.value
+                  );
+                  if (!existingValues.includes(newOption.value)) {
+                    const newOptionsList = [...distanceOptionsList, newOption];
+                    setDistanceOptionsList(newOptionsList);
+                  }
+
+                  console.log('New option:', newOption);
+                }
+              }}
             />
           )}
         />
@@ -207,8 +286,8 @@ const Form = () => {
             <Select
               {...field}
               classNames={classNamesStyles}
-              placeholder='Price order'
-              isDisabled={isLoadingCar || isLoading}
+              placeholder={isInterfaceLoading ? 'Please wait' : 'Price order'}
+              isDisabled={isLoadingCar || isLoading || isInterfaceLoading}
               options={[
                 { value: 'asc', label: 'Crescente' },
                 { value: 'desc', label: 'Decrescente' },
@@ -224,7 +303,7 @@ const Form = () => {
       </div>
       {/* bottone submit */}
       <Button
-        disabled={isLoadingCar || isLoading}
+        disabled={isLoadingCar || isLoading || isInterfaceLoading}
         className='w-full col-span-12 md:col-span-3'>
         <ButtonText />
       </Button>
