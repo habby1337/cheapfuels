@@ -1,4 +1,4 @@
-import { LucideProps, Moon, Sun } from 'lucide-react';
+import { LucideProps } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface Props {
