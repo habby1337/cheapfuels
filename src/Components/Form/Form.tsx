@@ -248,9 +248,6 @@ const Form = () => {
                 },
               ]}
               formatCreateLabel={(inputValue) => `Create "${inputValue}" km`}
-              onCreateOption={(inputValue) => {
-                const newOption = handleNewDistance(inputValue);
-              }}
               getNewOptionData={(inputValue, optionLabel) =>
                 handleNewDistance(inputValue)
               }
