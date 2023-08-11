@@ -52,6 +52,7 @@ const Form = () => {
 
     setTimeout(() => {
       setIsLoadingCar(false);
+      setIsInterfaceLoading(false);
     }, 1000);
   }, []);
 

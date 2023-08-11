@@ -7,6 +7,7 @@ import { useIndexedDBStore } from 'use-indexeddb';
 import { VehicleDataWithId } from '@/Shared/Interfaces/interfaces';
 
 import { useState } from 'react';
+import { useStore } from '@/Shared/Store/store';
 
 import { useParams } from 'react-router-dom';
 
@@ -16,6 +17,9 @@ const MyCars = () => {
   const { id } = useParams<{ id: string }>();
   const [carData, setCarData] = useState<VehicleDataWithId[] | null>(null);
   const [isNewCar, setIsNewCar] = useState<boolean>(false);
+  const setIsInterfaceLoading = useStore(
+    (state) => state.setIsInterfaceLoading
+  );
 
   const [isNewCarAdded, setIsNewCarAdded] = useState<boolean>(false);
 
@@ -31,6 +35,7 @@ const MyCars = () => {
   };
 
   const getCarFromDB = (): void => {
+    setIsInterfaceLoading(true);
     toast
       .promise(
         getAll(),
@@ -52,6 +57,9 @@ const MyCars = () => {
       })
       .catch((error) => {
         toast.error(`Error loading car data ${error as string}`);
+      })
+      .finally(() => {
+        setIsInterfaceLoading(false);
       });
   };
 

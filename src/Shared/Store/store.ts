@@ -29,7 +29,7 @@ export const useStore = create<SelectedCarStore>()(
     brandList: [],
     setBrandList: (brandList: any) => set({ brandList }),
 
-    isInterfaceLoading: false,
+    isInterfaceLoading: true,
     setIsInterfaceLoading: (isInterfaceLoading: boolean) =>
       set({ isInterfaceLoading }),
   }))
