@@ -1,4 +1,3 @@
-import { Button } from '@/Components/ui/button';
 import { LucideProps, Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -32,13 +31,13 @@ const ThemeHandler = (props: Props) => {
   };
 
   // Set the icon based on the theme
-  const Icon = () => {
-    if (theme === 'light') {
-      return <Moon size={props.iconSize} />;
-    } else {
-      return <Sun size={props.iconSize} />;
-    }
-  };
+  // const Icon = () => {
+  //   if (theme === 'light') {
+  //     return <Moon size={props.iconSize} />;
+  //   } else {
+  //     return <Sun size={props.iconSize} />;
+  //   }
+  // };
 
   return (
     <div className={props.className}>
