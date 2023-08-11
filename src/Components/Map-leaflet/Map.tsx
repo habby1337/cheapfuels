@@ -6,6 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 import L from 'leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
+import { toast } from 'react-toastify';
 
 import { useStore } from '@/Shared/Store/store';
 
@@ -62,6 +63,7 @@ const FuelStationsMarkers = () => {
   };
 
   const getFuelStationIcon = (fuelStation) => {
+    if (!fuelStation) return;
     const currentFuelStation = fuelStation.brand.toLowerCase();
 
     const brand = brandList.find(
@@ -100,36 +102,38 @@ const FuelStationsMarkers = () => {
       Object.keys(fuelStations).length === 0 ||
       fuelStations?.results?.length === 0
     )
-      return;
+      return toast.error('Nessuna stazione di servizio trovata');
 
-    if (fuelStations.success === false)
-      return console.log('fuelStations error:', fuelStations.error);
+    if (fuelStations.success === false || !fuelStations)
+      return toast.error('Errore nel caricamento delle stazioni di servizio');
 
-    const markers = fuelStations.results.map((fuelStation) => {
-      const { lat, lng } = fuelStation.location;
+    if (fuelStations.success === true && fuelStations.results.length != 0) {
+      const markers = fuelStations.results.map((fuelStation) => {
+        const { lat, lng } = fuelStation.location;
 
-      const icon = getFuelStationIcon(fuelStation);
+        const icon = getFuelStationIcon(fuelStation);
 
-      const marker = L.marker([lat, lng], {
-        icon: icon,
+        const marker = L.marker([lat, lng], {
+          icon: icon,
+        });
+
+        marker.bindPopup(
+          ReactDOMServer.renderToString(<FuelStationPopup {...fuelStation} />)
+        );
+
+        marker.on('mouseover', (e) => {
+          e.target.openPopup();
+        });
+
+        marker.on('click', () => {
+          map.setView([lat, lng], 15);
+        });
+
+        marker.addTo(map);
+
+        return marker;
       });
-
-      marker.bindPopup(
-        ReactDOMServer.renderToString(<FuelStationPopup {...fuelStation} />)
-      );
-
-      marker.on('mouseover', (e) => {
-        e.target.openPopup();
-      });
-
-      marker.on('click', () => {
-        map.setView([lat, lng], 15);
-      });
-
-      marker.addTo(map);
-
-      return marker;
-    });
+    }
   }, [fuelStations, brandList]);
 };
 
