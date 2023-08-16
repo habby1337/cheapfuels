@@ -1,21 +1,6 @@
 import { useEffect, useState } from 'react';
 
-type FuelData = {
-  avg: string;
-  accisa: string;
-  iva: string;
-  netto: string;
-  variation_amount: string;
-  variation_percentage: string;
-};
-
-interface AvgPrice {
-  date: string;
-  petrol: FuelData;
-  diesel: FuelData;
-  gpl: FuelData;
-}
-
+import { AvgPrice } from '../../Shared/Interfaces/interfaces';
 export const useAvgPrice = () => {
   const [avgPrice, setAvgPrice] = useState<AvgPrice | {}>({});
   const [error, setError] = useState<null | string>(null);

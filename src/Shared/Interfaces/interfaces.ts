@@ -1,3 +1,4 @@
+import { LogoMarker } from 'osservaprezzi-carburanti-node';
 import { FuelType, RefuelingMode } from './enums';
 
 export interface MapPoint {
@@ -53,4 +54,35 @@ export interface VehicleDataSelectList {
   readonly label: string;
   readonly value: string;
   readonly isDisabled?: boolean;
+}
+
+export interface FuelStation {
+  bandiera: string;
+  brand: string;
+  logoMarkerList: LogoMarker[];
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface customServiceAreaSearchResponse {
+  results: FuelStation[];
+  success: boolean;
+}
+
+export type FuelData = {
+  avg: string;
+  accisa: string;
+  iva: string;
+  netto: string;
+  variation_amount: string;
+  variation_percentage: string;
+};
+
+export interface AvgPrice {
+  date: string;
+  petrol: FuelData;
+  diesel: FuelData;
+  gpl: FuelData;
 }

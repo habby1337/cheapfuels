@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { customServiceAreaSearchResponse } from '../Interfaces/interfaces';
 
 interface SelectedCarStore {
   selectedVehicleId: number;
   setSelectedVehicleId: (selectVehicleId: number) => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-  fuelStations: {};
+  fuelStations: customServiceAreaSearchResponse;
   setFuelStations: (fuelStation: any) => void;
   brandList: [];
   setBrandList: (brandList: any) => void;
@@ -23,7 +24,10 @@ export const useStore = create<SelectedCarStore>()(
     isLoading: false, //Todo set to false
     setIsLoading: (isLoading: boolean) => set({ isLoading }),
 
-    fuelStations: {},
+    fuelStations: {
+      results: [],
+      success: false,
+    },
     setFuelStations: (fuelStations: any) => set({ fuelStations }),
 
     brandList: [],

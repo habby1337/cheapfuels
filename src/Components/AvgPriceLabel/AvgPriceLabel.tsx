@@ -1,29 +1,37 @@
 import { useAvgPrice } from '../hooks/useAvgPrice';
 import { useEffect, useState } from 'react';
 import { useStore } from '@/Shared/Store/store';
+import { FuelData } from '@/Shared/Interfaces/interfaces';
 
 const AvgPriceLabel = (fuelType: any) => {
   const { avgPrice } = useAvgPrice();
-  const [fuel, setFuel] = useState('');
+  const [fuel, setFuel] = useState<any>('');
   const [minPrice, setMinPrice] = useState(0);
   const isInterfaceLoading = useStore((state) => state.isInterfaceLoading);
 
   useEffect(() => {
-    if (fuelType.fuelType) {
-      const { label } = fuelType.fuelType;
+    const label: string = fuelType.fuelType?.label;
+    const value: string = fuelType.fuelType?.value;
+
+    value === '0' && setFuel('');
+
+    if (label !== undefined && value !== '0') {
       setFuel(label.toLowerCase());
 
-      // @ts-ignore
-      if (avgPrice[label.toLowerCase()]) {
-        // @ts-ignore
-        const avgObj = avgPrice[label.toLowerCase()];
+      const selectedFuelDataObject: FuelData =
+        avgPrice[label.toLowerCase() as keyof typeof avgPrice];
+
+      if (selectedFuelDataObject !== undefined) {
         const sub =
           parseFloat(
-            avgObj.variation_amount.replace('+', '').replace('-', '')
+            selectedFuelDataObject.variation_amount
+              .replace('+', '')
+              .replace('-', '')
           ) / 1000;
-        const min = parseFloat(avgObj.avg) - sub;
-        // @ts-ignore
-        setMinPrice(min.toFixed(2));
+
+        const min = parseFloat(selectedFuelDataObject.avg) - sub;
+
+        setMinPrice(min.toFixed(2) as unknown as number);
       }
     }
     // }
@@ -36,13 +44,10 @@ const AvgPriceLabel = (fuelType: any) => {
       ) : (
         <span className='text-xs text-gray-600 dark:text-gray-400 '>
           Avg:{' '}
-          {
-            // @ts-ignore
-            avgPrice[fuel]
-              ? // @ts-ignore
-                `${parseFloat(avgPrice[fuel]?.avg).toFixed(2)} €`
-              : `Select fuel type`
-          }
+          {avgPrice[fuel as keyof typeof avgPrice]
+            ? // @ts-ignore
+              `${parseFloat(avgPrice[fuel]?.avg).toFixed(2)} €`
+            : `Select fuel type`}
         </span>
       )}
       {isInterfaceLoading ? (

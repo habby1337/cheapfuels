@@ -1,25 +1,26 @@
-// @ts-nocheck
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import { usePosition } from '../hooks/usePosition';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, MutableRefObject } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import L from 'leaflet';
+import L, { Marker } from 'leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import 'leaflet-gesture-handling/dist/leaflet-gesture-handling.css';
-import { toast } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 
 import { useStore } from '@/Shared/Store/store';
 
-import icons from '@/Shared/Constants/icons';
+// @ts-ignore
+import icons from '@/Shared/Constants/icons.js';
 
 import { useMap } from 'react-leaflet';
-
-type mapCoords = [number, number];
+import {
+  FuelStation,
+  customServiceAreaSearchResponse,
+} from '@/Shared/Interfaces/interfaces';
+import { BrandLogo, LogoMarker } from 'osservaprezzi-carburanti-node';
 
 const Map = () => {
-  const { latitude, longitude, error } = usePosition();
-
-  const [mapCenter, setMapCenter] = useState<mapCoords>([41.902782, 12.496366]);
+  const { latitude, longitude } = usePosition();
   useEffect(() => {
     L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
   }, []);
@@ -27,9 +28,10 @@ const Map = () => {
   return (
     <>
       <MapContainer
-        center={mapCenter}
+        center={[latitude || 41.902782, longitude || 12.496366]}
         zoom={13}
         scrollWheelZoom={false}
+        // @ts-ignore added gestureHandling lib
         gestureHandling={true}
         className='h-full rounded-lg'>
         <TileLayer
@@ -44,7 +46,7 @@ const Map = () => {
         />
 
         <FuelStationsMarkers />
-        <CenterMapOnPosition />
+        <CenterMapOnUserPosition />
       </MapContainer>
     </>
   );
@@ -52,21 +54,25 @@ const Map = () => {
 
 export default Map;
 
-const FuelStationsMarkers = () => {
+const FuelStationsMarkers = (): any => {
   const map = useMap();
-  const brandList = useStore((state) => state.brandList);
-  const fuelStations = useStore((state) => state.fuelStations);
+  const brandList: BrandLogo[] = useStore((state) => state.brandList);
+  const fuelStations: customServiceAreaSearchResponse = useStore(
+    (state) => state.fuelStations
+  );
 
-  const shortenText = (text, maxLength) => {
+  const shortenText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
   };
 
-  const getFuelStationIcon = (fuelStation) => {
+  const getFuelStationIcon = (fuelStation: FuelStation) => {
     if (!fuelStation) return;
     const currentFuelStation = fuelStation.brand.toLowerCase();
 
-    const brand = brandList.find(
+    if (!brandList) return toast.error('Errore nel caricamento dei brand');
+
+    const brand: BrandLogo | undefined = brandList.find(
       (brand) => brand.bandiera.toLowerCase() === currentFuelStation
     );
 
@@ -78,15 +84,12 @@ const FuelStationsMarkers = () => {
         popupAnchor: [0, -6],
       });
 
-    // const lastLogo = brand.logoMarkerList[brand.logoMarkerList.length - 1];
-    const th2Logo = brand.logoMarkerList.find(
-      (logo) => logo.tipoFile === 'th2'
+    const th2Logo: LogoMarker | undefined = brand.logoMarkerList.find(
+      (logo: LogoMarker) => logo.tipoFile === 'th2'
     );
     const base64Content = th2Logo?.content || 'base';
     const imageExtension = th2Logo?.estensione || 'svg';
 
-    // console.log(`data:image/${imageExtension};base64,${base64Content}`);
-    // return `data:image/${imageExtension};base64,${base64Content}`;
     return L.icon({
       iconUrl: `data:image/${imageExtension};base64,${base64Content}`,
       iconSize: [25, 25],
@@ -108,12 +111,13 @@ const FuelStationsMarkers = () => {
       toast.error('Errore nel caricamento delle stazioni di servizio');
 
     if (fuelStations.success === true && fuelStations.results.length != 0) {
-      const markers = fuelStations.results.map((fuelStation) => {
+      fuelStations.results.map((fuelStation) => {
         const { lat, lng } = fuelStation.location;
 
         const icon = getFuelStationIcon(fuelStation);
 
         const marker = L.marker([lat, lng], {
+          // @ts-ignore
           icon: icon,
         });
 
@@ -137,8 +141,8 @@ const FuelStationsMarkers = () => {
   }, [fuelStations, brandList]);
 };
 
-const FuelStationPopup = ({ fuelStation }) => {
-  const shortenText = (text, maxLength) => {
+const FuelStationPopup = ({ fuelStation }: any) => {
+  const shortenText = (text: string, maxLength: number) => {
     if (text?.length <= maxLength) return text;
     return text?.slice(0, maxLength) + '...';
   };
@@ -146,20 +150,32 @@ const FuelStationPopup = ({ fuelStation }) => {
   return <></>;
 };
 
-const CenterMapOnPosition = () => {
+const CenterMapOnUserPosition = () => {
   const map = useMap();
-  const { latitude, longitude, error } = usePosition();
+  const carMarkerRef: MutableRefObject<Marker | null> = useRef(null);
+  const { latitude, longitude } = usePosition();
 
-  useEffect(() => {
-    if (latitude && longitude) {
-      map.setView([latitude, longitude], 13);
-      map.panTo([latitude, longitude], {
-        animate: true,
-        duration: 1,
-        easeLinearity: 0.5,
-        noMoveStart: true,
+  const addCarMarker = () => {
+    if (!latitude && !longitude) {
+      toast.loading('Looking for your position...', {
+        autoClose: false,
+        transition: Slide,
+        hideProgressBar: false,
+        closeButton: false,
+        position: 'bottom-center',
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        toastId: 'userPositionToast',
       });
-      L.marker([latitude, longitude], {
+      return;
+    } else {
+      //check if marker already exists
+      if (carMarkerRef.current) {
+        map.removeLayer(carMarkerRef.current);
+      }
+
+      carMarkerRef.current = L.marker([latitude, longitude], {
         icon: L.icon({
           iconUrl: icons.car,
           iconSize: [30, 25],
@@ -167,7 +183,27 @@ const CenterMapOnPosition = () => {
           popupAnchor: [0, -6],
         }),
       }).addTo(map);
+
+      map.panTo([latitude, longitude], {
+        animate: true,
+        duration: 1,
+        easeLinearity: 0.5,
+        noMoveStart: true,
+      });
+      toast.update('userPositionToast', {
+        render: 'Found your position!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 1000,
+        transition: Slide,
+        hideProgressBar: false,
+        closeButton: true,
+      });
     }
+  };
+
+  useEffect(() => {
+    addCarMarker();
   }, [latitude, longitude]);
 
   return null;

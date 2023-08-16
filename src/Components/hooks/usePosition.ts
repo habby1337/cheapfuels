@@ -23,7 +23,7 @@ interface UsePosition {
   error: null | string;
 }
 
-export const usePosition = () => {
+export const usePosition = (): UsePosition => {
   const [position, setPosition] = useState({});
   const [error, setError] = useState<null | string>(null);
 
