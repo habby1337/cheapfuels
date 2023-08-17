@@ -1,4 +1,4 @@
-import { LogoMarker } from 'osservaprezzi-carburanti-node';
+import { LogoMarker, ServiceArea } from 'osservaprezzi-carburanti-node';
 import { FuelType, RefuelingMode } from './enums';
 
 export interface MapPoint {
@@ -85,4 +85,8 @@ export interface AvgPrice {
   petrol: FuelData;
   diesel: FuelData;
   gpl: FuelData;
+}
+
+export interface FuelStationObj {
+  fuelStation: ServiceArea;
 }

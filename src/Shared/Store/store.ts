@@ -13,6 +13,8 @@ interface SelectedCarStore {
   setBrandList: (brandList: any) => void;
   isInterfaceLoading: boolean;
   setIsInterfaceLoading: (isInterfaceLoading: boolean) => void;
+  disableSubmitButton: boolean;
+  setDisableSubmitButton: (disableSubmitButton: boolean) => void;
 }
 
 export const useStore = create<SelectedCarStore>()(
@@ -36,5 +38,9 @@ export const useStore = create<SelectedCarStore>()(
     isInterfaceLoading: true,
     setIsInterfaceLoading: (isInterfaceLoading: boolean) =>
       set({ isInterfaceLoading }),
+
+    disableSubmitButton: true,
+    setDisableSubmitButton: (disableSubmitButton: boolean) =>
+      set({ disableSubmitButton }),
   }))
 );

@@ -271,3 +271,25 @@ input:checked + .toggle .star--5 {
 input:checked + .toggle .star--6 {
   transition: all 300ms 400ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
+
+.custom-popup {
+  @apply w-[300px];
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  @apply w-full h-full;
+  @apply bg-gray-200 dark:bg-slate-800;
+  @apply border border-border;
+  @apply rounded-lg;
+  @apply shadow-lg;
+}
+
+.custom-popup .leaflet-popup-content {
+  @apply w-full h-full;
+  @apply p-1 m-0;
+  @apply text-black dark:text-white;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  @apply hidden;
+}

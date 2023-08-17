@@ -36,6 +36,7 @@ const Form = () => {
     state.isInterfaceLoading,
     state.setIsInterfaceLoading,
   ]);
+  const disableSubmitButton = useStore((state) => state.disableSubmitButton);
   const { latitude: lat, longitude: lng, error: coordErr } = usePosition();
   const [isLoadingCar, setIsLoadingCar] = useState(false);
   const [vehicles, setVehicles] = useState<VehicleDataSelectList[]>([]);
@@ -139,6 +140,12 @@ const Form = () => {
           .then((res) => {
             const fuelStations = res[0].data;
             const brandList = res[1].data;
+            if (fuelStations.success === false || !fuelStations)
+              toast.error('Errore nel caricamento delle stazioni di servizio');
+
+            if (brandList.success === false || !brandList)
+              toast.error('Errore nel caricamento delle marche');
+
             setFuelStations(fuelStations);
             setBrandList(brandList);
             console.log(fuelStations, 'fuelStations', brandList, 'brandList');
@@ -301,7 +308,9 @@ const Form = () => {
       </div>
       {/* bottone submit */}
       <Button
-        disabled={isLoadingCar || isLoading || isInterfaceLoading}
+        disabled={
+          isLoadingCar || isLoading || isInterfaceLoading || disableSubmitButton
+        }
         className='w-full col-span-12 md:col-span-3'>
         <ButtonText />
       </Button>
