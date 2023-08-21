@@ -3,7 +3,7 @@ interface CircleFromPoint {
     lat: number,
     lng: number,
     rad: number,
-    details?: number
+    details?: number,
   ): { lat: number; lng: number }[];
 }
 
@@ -11,7 +11,7 @@ export const getCircleFromPoint: CircleFromPoint = (
   lat,
   lng,
   rad,
-  details = 24
+  details = 24,
 ) => {
   const points: { lat: number; lng: number }[] = [];
 
@@ -31,13 +31,13 @@ export const getCircleFromPoint: CircleFromPoint = (
 
     let pLat = Math.asin(
       Math.sin(_lat) * Math.cos(d) +
-        Math.cos(_lat) * Math.sin(d) * Math.cos(brng)
+        Math.cos(_lat) * Math.sin(d) * Math.cos(brng),
     );
     const pLng =
       ((_lng +
         Math.atan2(
           Math.sin(brng) * Math.sin(d) * Math.cos(_lat),
-          Math.cos(d) - Math.sin(_lat) * Math.sin(pLat)
+          Math.cos(d) - Math.sin(_lat) * Math.sin(pLat),
         )) *
         180) /
       pi;

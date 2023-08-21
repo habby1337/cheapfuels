@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const getBrandList = async () => {
   axios
-    .get('/api/brandList')
+    .get("/api/brandList")
     .then((response) => {
       return response.data;
     })

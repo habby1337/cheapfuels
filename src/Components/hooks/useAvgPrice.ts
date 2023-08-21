@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { AvgPrice } from '../../Shared/Interfaces/interfaces';
+import { AvgPrice } from "../../Shared/Interfaces/interfaces";
 export const useAvgPrice = () => {
   const [avgPrice, setAvgPrice] = useState<AvgPrice | {}>({});
   const [error, setError] = useState<null | string>(null);
@@ -11,7 +11,7 @@ export const useAvgPrice = () => {
       return { avgPrice, error, fetchAvgPrice };
 
     try {
-      const response = await fetch('/api/fuelPriceData');
+      const response = await fetch("/api/fuelPriceData");
       const data = await response.json();
       setAvgPrice(data);
     } catch (error: any) {

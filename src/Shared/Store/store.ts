@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { customServiceAreaSearchResponse } from '../Interfaces/interfaces';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { customServiceAreaSearchResponse } from "../Interfaces/interfaces";
 
 interface SelectedCarStore {
   selectedVehicleId: number;
@@ -42,5 +42,5 @@ export const useStore = create<SelectedCarStore>()(
     disableSubmitButton: true,
     setDisableSubmitButton: (disableSubmitButton: boolean) =>
       set({ disableSubmitButton }),
-  }))
+  })),
 );

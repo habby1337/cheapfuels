@@ -1,14 +1,14 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import NavBar from './Components/NavBar/NavBar';
-import Home from './Components/routes/Home';
-import MyCars from './Components/routes/MyCars';
-import ErrorPage from './Components/ErrorPage/ErrorPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./Components/NavBar/NavBar";
+import Home from "./Components/routes/Home";
+import MyCars from "./Components/routes/MyCars";
+import ErrorPage from "./Components/ErrorPage/ErrorPage";
 
-import useSetupIndexedDB from './Components/hooks/useSetupIndexedDB';
+import useSetupIndexedDB from "./Components/hooks/useSetupIndexedDB";
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   useSetupIndexedDB();
@@ -17,28 +17,21 @@ const App = () => {
     <BrowserRouter>
       <NavBar />
       <Routes>
+        <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
         <Route
-          path='/'
-          element={<Home />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path='/mycars'
+          path="/mycars"
           element={<MyCars />}
           errorElement={<ErrorPage />}
         />
         <Route
-          path='/mycars/:id'
+          path="/mycars/:id"
           element={<MyCars />}
           errorElement={<ErrorPage />}
         />
-        <Route
-          path='*'
-          element={<ErrorPage />}
-        />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <ToastContainer
-        position='bottom-right'
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop
@@ -48,7 +41,7 @@ const App = () => {
         draggable
         pauseOnHover
         // theme='dark'
-        toastClassName='dark:bg-slate-700 dark:text-white'
+        toastClassName="dark:bg-slate-700 dark:text-white"
       />
     </BrowserRouter>
   );

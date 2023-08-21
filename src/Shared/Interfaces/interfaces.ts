@@ -1,5 +1,6 @@
-import { LogoMarker, ServiceArea } from 'osservaprezzi-carburanti-node';
-import { FuelType, RefuelingMode } from './enums';
+import { LogoMarker, ServiceArea } from "osservaprezzi-carburanti-node";
+import { FuelType, RefuelingMode } from "./enums";
+import { type } from "os";
 
 export interface MapPoint {
   lat: number;
@@ -9,7 +10,7 @@ export interface MapPoint {
 export interface SearchBaseCriteria {
   fuelType?: FuelType;
   refuelingMode?: RefuelingMode;
-  priceOrder?: 'asc' | 'desc';
+  priceOrder?: "asc" | "desc";
 }
 
 export interface SearchByZoneCriteria extends SearchBaseCriteria {
@@ -31,8 +32,8 @@ export interface SearchByBrandCriteria extends SearchBaseCriteria {
 
 // Form interfaces
 export interface FormInputs {
-  vehicleId: string | null;
-  distance: string | null;
+  vehicleId: { label: string; value: string } | null;
+  distance: { label: string; value: string } | null;
   priceOrder: { label: string; value: string } | null;
 }
 
@@ -90,3 +91,8 @@ export interface AvgPrice {
 export interface FuelStationObj {
   fuelStation: ServiceArea;
 }
+
+export type SelectOption = {
+  label: string;
+  value: string;
+};
