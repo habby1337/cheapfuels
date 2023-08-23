@@ -1,5 +1,14 @@
+#Notice:
+Hey, i'm currently working on it, being a personal project I cannot allocate that much time to it, so if you check out the url there might be bugs or missing features... 
+I swear they will be added
+
+<sub><sup>(I know the code is kinda spaghetti, im working on refactoring it)</sup></sub>
+
+
+
 # cheapfuels
  Find the cheapest fuels around you and save the type of car you have
+ 
 
 
 # Resources
