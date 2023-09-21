@@ -1,6 +1,5 @@
 import { LogoMarker, ServiceArea } from "osservaprezzi-carburanti-node";
 import { FuelType, RefuelingMode } from "./enums";
-import { type } from "os";
 
 export interface MapPoint {
   lat: number;

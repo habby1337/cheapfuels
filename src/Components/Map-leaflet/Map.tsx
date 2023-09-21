@@ -63,10 +63,10 @@ const FuelStationsMarkers = (): any => {
     (state) => state.fuelStations,
   );
 
-  const shortenText = (text: string, maxLength: number) => {
-    if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + "...";
-  };
+  // const shortenText = (text: string, maxLength: number) => {
+  //   if (text.length <= maxLength) return text;
+  //   return text.slice(0, maxLength) + "...";
+  // };
 
   const getFuelStationIcon = (fuelStation: FuelStation) => {
     if (!fuelStation) return;
@@ -153,14 +153,14 @@ const FuelStationsMarkers = (): any => {
 
 // TODO: Filter for vehicle fuel type
 const FuelStationPopup = ({ fuelStation }: FuelStationObj) => {
-  const shortenText = (text: string, maxLength: number) => {
-    if (text?.length <= maxLength) return text;
-    return text?.slice(0, maxLength) + "...";
-  };
+  // const shortenText = (text: string, maxLength: number) => {
+  //   if (text?.length <= maxLength) return text;
+  //   return text?.slice(0, maxLength) + "...";
+  // };
 
   const getIconColor = (fuelName: string) => {
     const FuelsTable = {
-      Benzina: "purple",
+      "Benzina": "purple",
       "HiQ Perform+": "purple",
       "Benzina Plus 98": "purple",
       "Benzina Shell V Power": "purple",
@@ -169,7 +169,7 @@ const FuelStationPopup = ({ fuelStation }: FuelStationObj) => {
       "Benzina 100 ottani": "purple",
       "Benzina 102 Ottani": "purple",
 
-      Gasolio: "yellow",
+      "Gasolio": "yellow",
       "Blue Super": "yellow",
       "Blue Diesel": "yellow",
       "Gasolio Premium": "yellow",
@@ -186,7 +186,7 @@ const FuelStationPopup = ({ fuelStation }: FuelStationObj) => {
       "Diesel e+10": "yellow",
       "Gasolio Alpino": "yellow",
       "Excellium diesel": "yellow",
-      DieselMax: "yellow",
+      "DieselMax": "yellow",
       "Gasolio artico": "yellow",
       "S-Diesel": "yellow",
       "GP DIESEL": "yellow",
@@ -195,14 +195,14 @@ const FuelStationPopup = ({ fuelStation }: FuelStationObj) => {
       "Gasolio Gelo": "yellow",
       "Gasolio Artico": "yellow",
 
-      GPL: "blue",
-      Metano: "green",
+      "GPL": "blue",
+      "Metano": "green",
       "L-GNC": "green",
-      GNL: "green",
-      R100: "green",
+      "GNL": "green",
+      "R100": "green",
       "HVO Ecoplus": "green",
-      HVOlution: "green",
-      HVO: "green",
+      "HVOlution": "green",
+      "HVO": "green",
 
       "V-Power": "orange",
     };
